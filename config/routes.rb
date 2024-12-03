@@ -1,4 +1,12 @@
 Rails.application.routes.draw do
+  get "ingredients/index"
+  get "ingredients/show"
+  get "ingredients/new"
+  get "ingredients/edit"
+  get "ingredients/create"
+  get "ingredients/update"
+  get "ingredients/destroy"
+  devise_for :users
   get "pages/home"
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
 
@@ -13,4 +21,8 @@ Rails.application.routes.draw do
   # Defines the root path route ("/")
   # root "posts#index"
   root "pages#home"
+
+  resources :users
+  resources :recipes
+  resources :ingredients
 end
