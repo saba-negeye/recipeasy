@@ -1,0 +1,8 @@
+<h1>Ingredients#edit</h1>
+<h1>Edit Ingredient</h1>
+
+<%= render 'form' %>
+
+<%= link_to 'Back to Ingredients', ingredients_path, class: 'btn btn-secondary' %>
+
+<%= button_to  'Delete', @ingredient, method: :delete, data: { confirm: 'Are you sure you want to delete this ingredient?' }, class: 'btn btn-danger' %>
