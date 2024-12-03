@@ -1,17 +1,26 @@
+<!-- Navbar -->
+  <nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <a href="/recipes" class="btn btn-primary">My Recipes</a>
+    
+    <% if user_signed_in? %>
+      <%= button_to "Sign Out", destroy_user_session_path, method: :delete, class: "btn btn-secondary" %>
+    <% else %>
+      <%= link_to "Sign In", new_user_session_path, class: "btn btn-secondary" %>
+      <%= link_to "Sign Up", new_user_registration_path, class: "btn btn-primary" %>
+    <% end %>
+  </nav>
+
 <div class="text-center">
   <h1>Welcome to Recipeasy</h1>
   <p>Your ultimate recipe organizer and meal planner!</p>
-  <a href="/recipes" class="btn btn-primary">My Recipes</a>
-  
-  <% if user_signed_in? %>
-    <%= button_to "Sign Out", destroy_user_session_path, method: :delete, class: "btn btn-secondary" %>
 
-
-  <% else %>
-     <%= link_to "Sign In", new_user_session_path, class: "btn btn-secondary" %>
-    <%= link_to "Sign Up", new_user_registration_path, class: "btn btn-primary" %>
+  <%= form_with(url: recipes_path, method: :get, local: true, class: "mb-4") do |form| %>
+    <div class="input-group">
+      <%= form.text_field :search, placeholder: "Search for recipes...", class: "form-control" %>
+      <div class="input-group-append">
+        <%= form.submit "Search", class: "btn btn-primary" %>
+      </div>
+    </div>
   <% end %>
- 
-
-
 </div>
+
