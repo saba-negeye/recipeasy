@@ -6,6 +6,7 @@ Rails.application.routes.draw do
   get "ingredients/create"
   get "ingredients/update"
   get "ingredients/destroy"
+
   devise_for :users
   get "pages/home"
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
@@ -25,4 +26,6 @@ Rails.application.routes.draw do
   resources :users
   resources :recipes
   resources :ingredients
+  resources :shopping_lists, only: [:show, :create, :edit, :update]
+ 
 end
