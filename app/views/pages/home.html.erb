@@ -11,4 +11,11 @@
      <%= link_to "Sign In", new_user_session_path, class: "btn btn-secondary" %>
     <%= link_to "Sign Up", new_user_registration_path, class: "btn btn-primary" %>
   <% end %>
+  #<% if current_user.shopping_list.nil? %>
+  #<%= link_to 'Create Shopping List', shopping_list_path(current_user.shopping_list), class: 'btn btn-primary' %>
+#<% else %>
+  #<%= link_to 'View Your Shopping List', shopping_list_path(current_user.shopping_list), class: 'btn btn-secondary' %>
+#<% end %>
+
+
 </div>

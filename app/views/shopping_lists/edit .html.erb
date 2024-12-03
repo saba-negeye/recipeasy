@@ -1,0 +1,23 @@
+<h1>Edit Shopping List</h1>
+
+<%= form_with model: @shopping_list, local: true do |form| %>
+  <% if @shopping_list.errors.any? %>
+    <div class="errors">
+      <h2><%= pluralize(@shopping_list.errors.count, "error") %> prohibited this shopping list from being saved:</h2>
+      <ul>
+        <% @shopping_list.errors.full_messages.each do |message| %>
+          <li><%= message %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="form-group">
+    <%= form.label :name, "Shopping List Name" %>
+    <%= form.text_field :name, class: "form-control" %>
+  </div>
+
+  <%= form.submit "Update Shopping List", class: "btn btn-primary" %>
+<% end %>
+
+<%= link_to 'Back to Shopping List', shopping_list_path(@shopping_list) %>
