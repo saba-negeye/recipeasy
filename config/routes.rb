@@ -19,6 +19,9 @@ Rails.application.routes.draw do
   get "service-worker" => "rails/pwa#service_worker", as: :pwa_service_worker
   get "manifest" => "rails/pwa#manifest", as: :pwa_manifest
 
+  # route will capture the search term (ingredient) from the user and pass it to the controller
+  get '/recipes/search', to: 'recipes#search', as: 'search_recipes'
+
   # Defines the root path route ("/")
   # root "posts#index"
   root "pages#home"
