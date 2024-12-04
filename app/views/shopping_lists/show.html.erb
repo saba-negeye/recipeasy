@@ -1,12 +1,5 @@
-<h3>Ingredients</h3>
-<% if @shopping_list.ingredients.any? %>
-  <ul>
-    <% @shopping_list.ingredients.each do |ingredient| %>
-      <li><%= ingredient.name %> - <%= ingredient.unit %> (<%= ingredient.quantity %>)</li>
-    <% end %>
-  </ul>
-<% else %>
-  <p>No ingredients added yet.</p>
-<% end %>
+<h1><%= @shopping_list.name %></h1>
 
-<%= link_to 'Add Ingredients', new_shopping_list_ingredient_path(@shopping_list) %>
+
+<%= link_to 'Edit Shopping List', edit_shopping_list_path(@shopping_list), class: 'btn btn-primary' %>
+<%= link_to 'Back to Home', root_path, class: 'btn btn-secondary' %>

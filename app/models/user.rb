@@ -6,12 +6,11 @@ class User < ApplicationRecord
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :validatable
   
-  # Create a shopping list when user is created
-  #after_create :create_shopping_list
+ 
+  after_create :create_shopping_list
 
   private
-  #method creates list 
-  #def create_shopping_list
-    #self.create_shopping_list(name: "My Shopping List")
-  #end
+  def create_shopping_list
+    ShoppingList.create(name: "My Shopping List", user:self)
+  end
 end
