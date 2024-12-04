@@ -23,6 +23,10 @@ gem 'jquery-rails'
 
 gem 'sassc-rails'
 
+#api 
+gem 'httparty'
+gem 'dotenv-rails', groups: [:development, :test]
+
 
 
 # Use Redis adapter to run Action Cable in production
