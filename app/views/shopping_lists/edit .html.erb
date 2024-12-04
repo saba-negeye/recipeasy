@@ -1,9 +1,8 @@
-<h1>Edit Shopping List</h1>
+<h1>Edit Your Shopping List</h1>
 
-<%= form_with model: @shopping_list, local: true do |form| %>
+<%= form_with(model: @shopping_list, local: true) do |form| %>
   <% if @shopping_list.errors.any? %>
-    <div class="errors">
-      <h2><%= pluralize(@shopping_list.errors.count, "error") %> prohibited this shopping list from being saved:</h2>
+    <div class="alert alert-danger">
       <ul>
         <% @shopping_list.errors.full_messages.each do |message| %>
           <li><%= message %></li>
@@ -13,11 +12,13 @@
   <% end %>
 
   <div class="form-group">
-    <%= form.label :name, "Shopping List Name" %>
+    <%= form.label :name %>
     <%= form.text_field :name, class: "form-control" %>
   </div>
 
-  <%= form.submit "Update Shopping List", class: "btn btn-primary" %>
+  <div class="form-group">
+    <%= form.submit "Update Shopping List", class: "btn btn-primary" %>
+  </div>
 <% end %>
 
-<%= link_to 'Back to Shopping List', shopping_list_path(@shopping_list) %>
+<%= link_to 'Back to Shopping List', shopping_list_path(@shopping_list), class: 'btn btn-secondary' %>
