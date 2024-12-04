@@ -1,5 +1,11 @@
 <h1><%= @shopping_list.name %></h1>
 
+<% @shopping_list.shopping_list_ingredients.each do |shopping_list_ingredient| %>
+  <div>
+    <%= check_box_tag "checked", shopping_list_ingredient.checked, shopping_list_ingredient.checked, data: { id: shopping_list_ingredient.id } %>
+    <%= shopping_list_ingredient.ingredient.name %> - <%= shopping_list_ingredient.quantity %> <%= shopping_list_ingredient.ingredient.unit %>
+  </div>
+<% end %>
 
 <%= link_to 'Edit Shopping List', edit_shopping_list_path(@shopping_list), class: 'btn btn-primary' %>
 <%= link_to 'Back to Home', root_path, class: 'btn btn-secondary' %>

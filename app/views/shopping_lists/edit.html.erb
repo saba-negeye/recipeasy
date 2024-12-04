@@ -15,9 +15,24 @@
     <%= form.label :name %>
     <%= form.text_field :name, class: "form-control" %>
   </div>
-
   <div class="form-group">
     <%= form.submit "Update Shopping List", class: "btn btn-primary" %>
+  </div>
+<% end %>
+
+<!-- Ingredient Adding Form -->
+<%= form_with(model: [ @shopping_list, @shopping_list_ingredient ], local: true) do |form| %>
+  <div class="form-group">
+    <%= form.text_field :name, placeholder: "Ingredient name", class: "form-control" %>
+  </div>
+  <div class="form-group">
+    <%= form.text_field :quantity, placeholder: "Quantity", class: "form-control" %>
+  </div>
+  <div class="form-group">
+    <%= form.text_field :unit, placeholder: "Unit (e.g., grams)", class: "form-control" %>
+  </div>
+  <div class="form-group">
+    <%= form.submit "Add Ingredient", class: "btn btn-secondary" %>
   </div>
 <% end %>
 
