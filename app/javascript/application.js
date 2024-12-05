@@ -5,7 +5,6 @@ import * as bootstrap from "bootstrap"
 import "search"
 
 
-
 /*!
 * Start Bootstrap - Heroic Features v5.0.6 (https://startbootstrap.com/template/heroic-features)
 * Copyright 2013-2023 Start Bootstrap
