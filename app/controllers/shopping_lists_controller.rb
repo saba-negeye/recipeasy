@@ -2,6 +2,10 @@ class ShoppingListsController < ApplicationController
   before_action :authenticate_user!
   before_action :set_shopping_list, only: [:show, :edit, :update]
 
+  def index
+    @shopping_list = current_user.shopping_list
+  end
+
   def show
     # No need to explicitly define @shopping_list here, it's set by the before_action
   end

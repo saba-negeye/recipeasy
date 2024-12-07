@@ -1,62 +1,80 @@
-console.log("loading search.js")
-
-
-
-
 $(document).ready(function () {
-    const $searchButton = $("#search-button");
-    const $ingredientInput = $("#ingredient");
-    const $recipesList = $("#recipes-list");
+  const apiKey = "63a9ff1e5f114ef6aa2c2f5df08f9a05";
+  
+  // Search button click handler
+  $("#search-button").on("click", function () {
+    const ingredient = $("#ingredient").val().trim();
 
-    // HIDE API KEY
-    const apiKey = "41508a215dec45bd93fe8f98c36450c0";
+    if (ingredient) {
+      fetchRecipes(ingredient, apiKey);
+    } else {
+      alert("Please enter an ingredient.");
+    }
+  });
 
-    $searchButton.on("click", function () {
-        const ingredient = $ingredientInput.val().trim();
+  // Fetch recipes from Spoonacular API
+  function fetchRecipes(ingredient, apiKey) {
+    const url = `https://api.spoonacular.com/recipes/findByIngredients?ingredients=${ingredient}&number=10&apiKey=${apiKey}`;
 
-        if (ingredient) {
-            fetchRecipes(ingredient, apiKey);
-        } else {
-            alert("Please enter an ingredient.");
-        }
+    // Loading message
+    $("#recipes-list").html("Loading recipes...");
+
+    // Making an AJAX request
+    $.ajax({
+      url: url,
+      method: "GET",
+      success: function (recipes) {
+        fetchDetailedRecipes(recipes, apiKey); // Fetch detailed information for each recipe
+      },
+      error: function () {
+        $("#recipes-list").html("There was an error fetching recipes.");
+      }
     });
+  }
 
-    function fetchRecipes(ingredient, apiKey) {
-        const url = `https://api.spoonacular.com/recipes/findByIngredients?ingredients=${ingredient}&number=10&apiKey=${apiKey}`;
+  // Fetch detailed recipe information (ingredients, instructions, image, etc.)
+  function fetchDetailedRecipes(recipes, apiKey) {
+    let recipeHtml = "";
 
-        $recipesList.html("Loading recipes...");
+    // Iterate through each recipe and fetch detailed info
+    recipes.forEach(function (recipe) {
+      $.ajax({
+        url: `https://api.spoonacular.com/recipes/${recipe.id}/information?apiKey=${apiKey}`,
+        method: "GET",
+        success: function (recipeDetails) {
+          // Prepare detailed recipe HTML
+          recipeHtml += `
+            <div class="recipe">
+              <h3>${recipeDetails.title}</h3>
+              <img src="${recipeDetails.image}" alt="${recipeDetails.title}" />
+              <p><strong>Ingredients:</strong></p>
+              <ul>
+                ${recipeDetails.extendedIngredients.map(function (ingredient) {
+                  return `<li>${ingredient.amount} ${ingredient.unit} ${ingredient.name}</li>`;
+                }).join('')}
+              </ul>
+              <p><strong>Instructions:</strong></p>
+              <p>${recipeDetails.instructions}</p>
+          `;
 
-        $.ajax({
-            url: url,
-            method: "GET",
-            success: function (data) {
-                displayRecipes(data);
-            },
-            error: function (error) {
-                console.error("Error fetching recipes:", error);
-                $recipesList.html("There was an error fetching recipes.");
-            }
-        });
-    }
+          // Check if nutrition data exists and has the expected structure
+          if (recipeDetails.nutrition && recipeDetails.nutrition.nutrients && recipeDetails.nutrition.nutrients[0]) {
+            recipeHtml += `<p><strong>Nutrition:</strong> Calories: ${recipeDetails.nutrition.nutrients[0].amount} ${recipeDetails.nutrition.nutrients[0].unit}</p>`;
+          } else {
+            recipeHtml += `<p><strong>Nutrition:</strong> Information not available.</p>`;
+          }
 
-    function displayRecipes(recipes) {
-        if (recipes.length > 0) {
-            const recipeHtml = recipes
-                .map(recipe => {
-                    return `
-                        <div class="recipe">
-                            <h3>${recipe.title}</h3>
-                            <p>Used Ingredients: ${recipe.usedIngredientCount}</p>
-                            <p>Missed Ingredients: ${recipe.missedIngredientCount}</p>
-                            <a href="${recipe.sourceUrl}" target="_blank">View Recipe</a>
-                        </div>
-                    `;
-                })
-                .join("");
-            $recipesList.html(recipeHtml);
-        } else {
-            $recipesList.html("No recipes found for this ingredient.");
+          recipeHtml += `</div>`;
+
+          // Once all recipe details are fetched, display them
+          if (recipeHtml) {
+            $("#recipes-list").html(recipeHtml);
+          }
+        },
+        error: function () {
+          recipeHtml += `<p>Failed to load detailed recipe information for ${recipe.title}.</p>`;
         }
-    }
+      });
+    });
+  }
 });
-
