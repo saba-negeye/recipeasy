@@ -5,10 +5,12 @@
 <% end %>
 <!-- Navbar -->
   <nav class="navbar navbar-expand-lg navbar-light bg-light">
-    <a href="/recipes" class="btn btn-primary">My Recipes</a>
+   
     
     <% if user_signed_in? %>
-      <%= button_to "Sign Out", destroy_user_session_path, method: :delete, class: "btn btn-secondary" %>
+    <a href="/recipes" class="btn btn-primary">My Recipes</a>
+    <%= link_to 'View Shopping List', shopping_lists_path(@shopping_list), class: 'btn btn-info' %>
+    <%= button_to "Sign Out", destroy_user_session_path, method: :delete, class: "btn btn-secondary" %>
     <% else %>
       <%= link_to "Sign In", new_user_session_path, class: "btn btn-secondary" %>
       <%= link_to "Sign Up", new_user_registration_path, class: "btn btn-primary" %>

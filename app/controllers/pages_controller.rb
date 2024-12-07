@@ -1,4 +1,7 @@
 class PagesController < ApplicationController
   def home
-  end
+    if user_signed_in?
+      @shopping_list = current_user.shopping_list
+    end
+end
 end
