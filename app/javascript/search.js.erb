@@ -1,10 +1,22 @@
 $(document).ready(function () {
-  const apiKey = "63a9ff1e5f114ef6aa2c2f5df08f9a05";
+  const apiKey = "bde4044cbeac4accb71e78d2aa890b69";
   
+  // Only add CSRF token for internal requests (to your Rails app)
+  const csrfToken = document.querySelector('meta[name="csrf-token"]')?.getAttribute('content');
+  
+  // Add CSRF token only for requests to your Rails server
+  $.ajaxSetup({
+    beforeSend: function (xhr, settings) {
+      if (settings.url.includes(window.location.origin)) {
+        xhr.setRequestHeader('X-CSRF-Token', csrfToken);
+      }
+    }
+  });
+
   // Search button click handler
   $("#search-button").on("click", function () {
     const ingredient = $("#ingredient").val().trim();
-
+    
     if (ingredient) {
       fetchRecipes(ingredient, apiKey);
     } else {
@@ -12,39 +24,39 @@ $(document).ready(function () {
     }
   });
 
-  // Fetch recipes from Spoonacular API
+  // Define the fetchRecipes function to fetch recipes based on the ingredient
   function fetchRecipes(ingredient, apiKey) {
-    const url = `https://api.spoonacular.com/recipes/findByIngredients?ingredients=${ingredient}&number=10&apiKey=${apiKey}`;
-
-    // Loading message
-    $("#recipes-list").html("Loading recipes...");
-
-    // Making an AJAX request
     $.ajax({
-      url: url,
-      method: "GET",
+      url: `https://api.spoonacular.com/recipes/findByIngredients?ingredients=${ingredient}&apiKey=${apiKey}`,
+      method: 'GET',
       success: function (recipes) {
-        fetchDetailedRecipes(recipes, apiKey); // Fetch detailed information for each recipe
+        console.log(recipes); // Log the recipes to verify the API response
+        
+        // Call another function to display the recipes (you can reuse the code to display detailed recipe information here)
+        fetchDetailedRecipes(recipes, apiKey);
       },
       error: function () {
-        $("#recipes-list").html("There was an error fetching recipes.");
+        alert("Error fetching recipes.");
       }
     });
   }
 
-  // Fetch detailed recipe information (ingredients, instructions, image, etc.)
+  // Function to display detailed recipes (you already have this function)
   function fetchDetailedRecipes(recipes, apiKey) {
     let recipeHtml = "";
 
-    // Iterate through each recipe and fetch detailed info
     recipes.forEach(function (recipe) {
       $.ajax({
         url: `https://api.spoonacular.com/recipes/${recipe.id}/information?apiKey=${apiKey}`,
         method: "GET",
         success: function (recipeDetails) {
-          // Prepare detailed recipe HTML
           recipeHtml += `
-            <div class="recipe">
+            <div class="recipe" 
+                 data-recipe-id="${recipeDetails.id}"
+                 data-recipe-title="${recipeDetails.title}"
+                 data-recipe-image="${recipeDetails.image}"
+                 data-recipe-instructions="${recipeDetails.instructions}"
+                 data-recipe-ingredients='${JSON.stringify(recipeDetails.extendedIngredients)}'>
               <h3>${recipeDetails.title}</h3>
               <img src="${recipeDetails.image}" alt="${recipeDetails.title}" />
               <p><strong>Ingredients:</strong></p>
@@ -55,18 +67,17 @@ $(document).ready(function () {
               </ul>
               <p><strong>Instructions:</strong></p>
               <p>${recipeDetails.instructions}</p>
+              <button class="save-recipe" data-recipe-id="${recipeDetails.id}">Save Recipe</button>
           `;
-
-          // Check if nutrition data exists and has the expected structure
+  
           if (recipeDetails.nutrition && recipeDetails.nutrition.nutrients && recipeDetails.nutrition.nutrients[0]) {
             recipeHtml += `<p><strong>Nutrition:</strong> Calories: ${recipeDetails.nutrition.nutrients[0].amount} ${recipeDetails.nutrition.nutrients[0].unit}</p>`;
           } else {
             recipeHtml += `<p><strong>Nutrition:</strong> Information not available.</p>`;
           }
-
+  
           recipeHtml += `</div>`;
-
-          // Once all recipe details are fetched, display them
+  
           if (recipeHtml) {
             $("#recipes-list").html(recipeHtml);
           }
@@ -77,4 +88,40 @@ $(document).ready(function () {
       });
     });
   }
+
+  // Save button click handler (as per your earlier code)
+  $(document).on('click', '.save-recipe', function () {
+    const recipeElement = $(this).closest('.recipe');
+    const recipeId = recipeElement.data('recipe-id');
+    const userId = document.querySelector('meta[name="user-id"]')?.getAttribute('content');
+    const recipeTitle = recipeElement.data('recipe-title');
+    const recipeImage = recipeElement.data('recipe-image');
+    const recipeInstructions = recipeElement.data('recipe-instructions');
+    const ingredients = JSON.parse(recipeElement.data('recipe-ingredients'));
+
+    $.ajax({
+      url: '/recipes/save',
+      method: 'POST',
+      data: {
+        recipe_id: recipeId,
+        user_id: userId,
+        title: recipeTitle,
+        image: recipeImage,
+        instructions: recipeInstructions,
+        ingredients: ingredients.map(function (ingredient) {
+          return {
+            name: ingredient.name,
+            quantity: ingredient.amount,
+            unit: ingredient.unit
+          };
+        })
+      },
+      success: function(response) {
+        alert('Recipe saved!');
+      },
+      error: function() {
+        alert('Failed to save the recipe.');
+      }
+    });
+  });
 });
