@@ -1,11 +1,4 @@
 Rails.application.routes.draw do
-  get "ingredients/index"
-  get "ingredients/show"
-  get "ingredients/new"
-  get "ingredients/edit"
-  get "ingredients/create"
-  get "ingredients/update"
-  get "ingredients/destroy"
 
   devise_for :users
   get "pages/home"
@@ -27,10 +20,9 @@ Rails.application.routes.draw do
   root "pages#home"
 
   resources :users
-  resources :recipes
+  resources :recipes, only: [:index, :create, :new, :edit, :show, :update, :destroy]
   resources :ingredients
   resources :shopping_lists 
   
-  
- 
+  post 'recipes/save', to: 'recipes#save'
 end

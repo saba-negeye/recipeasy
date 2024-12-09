@@ -3,35 +3,28 @@
     import "search";
   </script>
 <% end %>
+
 <!-- Navbar -->
-  <nav class="navbar navbar-expand-lg navbar-light bg-light">
-   
-    
-    <% if user_signed_in? %>
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+  <% if user_signed_in? %>
     <a href="/recipes" class="btn btn-primary">My Recipes</a>
     <%= link_to 'View Shopping List', shopping_lists_path(@shopping_list), class: 'btn btn-info' %>
     <%= button_to "Sign Out", destroy_user_session_path, method: :delete, class: "btn btn-secondary" %>
-    <% else %>
-      <%= link_to "Sign In", new_user_session_path, class: "btn btn-secondary" %>
-      <%= link_to "Sign Up", new_user_registration_path, class: "btn btn-primary" %>
-    <% end %>
-
-  </nav>
+  <% else %>
+    <%= link_to "Sign In", new_user_session_path, class: "btn btn-secondary" %>
+    <%= link_to "Sign Up", new_user_registration_path, class: "btn btn-primary" %>
+  <% end %>
+</nav>
 
 <div class="text-center">
   <h1>Welcome to Recipeasy</h1>
   <p>Your ultimate recipe organizer and meal planner!</p>
 
   <div id="search-form">
-  <%= label_tag :ingredient, "Search Recipes by Ingredient:" %>
-  <%= text_field_tag :ingredient, nil, id: "ingredient", placeholder: "e.g., chicken" %>
-  <%= button_tag "Search", type: "button", id: "search-button" %>
+    <%= label_tag :ingredient, "Search Recipes by Ingredient:" %>
+    <%= text_field_tag :ingredient, nil, id: "ingredient", placeholder: "e.g., chicken" %>
+    <%= button_tag "Search", type: "button", id: "search-button" %>
   </div>
 
-  
-  
   <div id="recipes-list"></div>
-  
 </div>
-
-

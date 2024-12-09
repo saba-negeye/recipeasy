@@ -28,7 +28,9 @@ gem 'httparty'
 gem 'dotenv-rails', groups: [:development, :test]
 
 
+gem 'cocoon'
 
+gem 'gon'
 
 # Use Redis adapter to run Action Cable in production
 # gem "redis", ">= 4.0.1"
