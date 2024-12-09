@@ -34,6 +34,9 @@
 
         <%= recipe_ingredient_form.label :quantity, "Quantity" %>
         <%= recipe_ingredient_form.number_field :quantity, class: 'form-control' %>
+        <%= recipe_ingredient_form.label :unit, "Unit" %>
+        <%= recipe_ingredient_form.select :unit, ['unitless', 'grams', 'kilograms', 'cups', 'tablespoons', 'teaspoons', 'liters', 'milliliters'], { include_blank: "Select Unit" }, class: 'form-control' %>
+
       </div>
     <% end %>
   </div>

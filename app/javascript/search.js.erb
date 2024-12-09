@@ -1,17 +1,58 @@
+function saveRecipeToDatabase(recipeDetails) {
+  console.log("Recipe Data:", recipeDetails); // Check if data is correct
+
+  //join table
+  const ingredients = recipeDetails.ingredients.map(function(ingredient) {
+    return {
+      ingredient_id: ingredient.id,  // The ID of the ingredient table
+      quantity: ingredient.amount,   // The quantity to be stored in join table
+    };
+  });
+
+ 
+  const recipePayload = {
+    recipe: {
+      title: recipeDetails.title,  
+      description: recipeDetails.instructions,  
+      user_id: document.querySelector('meta[name="user-id"]').getAttribute('content'),  // from meta tag
+      recipe_ingredients_attributes: ingredients // ingredients i for RecipeIngredients
+    }
+  };
+
+  // Make the AJAX request to save the recipe
+  $.ajax({
+    url: "/recipes", 
+    method: "POST",
+    data: recipePayload,
+    success: function(response) {
+      console.log("Recipe saved successfully:", response);
+      alert("Recipe saved!");
+    },
+    error: function(xhr, status, error) {
+      console.error("Error saving recipe:", error);
+      console.log("Response:", xhr.responseText);
+      alert("Failed to save recipe.");
+    }
+  });
+}
+
 $(document).ready(function () {
-  const apiKey = "bde4044cbeac4accb71e78d2aa890b69";
-  
-  // Only add CSRF token for internal requests (to your Rails app)
+  const apiKey = "151f8c76299649229f089258a0118992";
+
+  // CSRF token for internal requests (to your Rails app)
   const csrfToken = document.querySelector('meta[name="csrf-token"]')?.getAttribute('content');
+  console.log("CSRF Token:", csrfToken);
   
   // Add CSRF token only for requests to your Rails server
   $.ajaxSetup({
-    beforeSend: function (xhr, settings) {
-      if (settings.url.includes(window.location.origin)) {
-        xhr.setRequestHeader('X-CSRF-Token', csrfToken);
-      }
+  beforeSend: function(xhr, settings) {
+    if (settings.url.includes(window.location.origin)) {
+      xhr.setRequestHeader('X-CSRF-Token', csrfToken);
+      console.log("CSRF Token Set in Request Header:", csrfToken); // Debug
     }
-  });
+  }
+});
+
 
   // Search button click handler
   $("#search-button").on("click", function () {
@@ -24,10 +65,11 @@ $(document).ready(function () {
     }
   });
 
-  // Define the fetchRecipes function to fetch recipes based on the ingredient
+  // Fetch recipes based on the ingredient
   function fetchRecipes(ingredient, apiKey) {
+    
     $.ajax({
-      url: `https://api.spoonacular.com/recipes/findByIngredients?ingredients=${ingredient}&apiKey=${apiKey}`,
+      url: `https://api.spoonacular.com/recipes/findByIngredients?ingredients=${ingredient}&number=1&apiKey=${apiKey}`,
       method: 'GET',
       success: function (recipes) {
         console.log(recipes); // Log the recipes to verify the API response
@@ -41,87 +83,88 @@ $(document).ready(function () {
     });
   }
 
-  // Function to display detailed recipes (you already have this function)
+  // Function to display detailed recipes
   function fetchDetailedRecipes(recipes, apiKey) {
     let recipeHtml = "";
-
     recipes.forEach(function (recipe) {
       $.ajax({
         url: `https://api.spoonacular.com/recipes/${recipe.id}/information?apiKey=${apiKey}`,
         method: "GET",
         success: function (recipeDetails) {
+          const ingredients = recipeDetails.extendedIngredients || [];
+          console.log("Fetched ingredients:", ingredients);
+
+          const sanitizedIngredients = ingredients.map(ingredient => {
+            return {
+              name: ingredient.name,
+              amount: ingredient.amount,
+              unit: ingredient.unit || "unitless",
+              id: ingredient.id // Add ingredient ID for saving to the database
+            };
+          });
+
+          const encodedIngredients = encodeURIComponent(JSON.stringify(sanitizedIngredients));
+
           recipeHtml += `
             <div class="recipe" 
-                 data-recipe-id="${recipeDetails.id}"
-                 data-recipe-title="${recipeDetails.title}"
-                 data-recipe-image="${recipeDetails.image}"
-                 data-recipe-instructions="${recipeDetails.instructions}"
-                 data-recipe-ingredients='${JSON.stringify(recipeDetails.extendedIngredients)}'>
+                data-recipe-id="${recipeDetails.id}"
+                data-recipe-title="${recipeDetails.title}"
+                data-recipe-image="${recipeDetails.image}"
+                data-recipe-instructions="${recipeDetails.instructions || 'No instructions available.'}"
+                data-recipe-ingredients='${encodedIngredients}'>
               <h3>${recipeDetails.title}</h3>
               <img src="${recipeDetails.image}" alt="${recipeDetails.title}" />
               <p><strong>Ingredients:</strong></p>
               <ul>
-                ${recipeDetails.extendedIngredients.map(function (ingredient) {
+                ${sanitizedIngredients.map(function (ingredient) {
                   return `<li>${ingredient.amount} ${ingredient.unit} ${ingredient.name}</li>`;
                 }).join('')}
               </ul>
               <p><strong>Instructions:</strong></p>
-              <p>${recipeDetails.instructions}</p>
-              <button class="save-recipe" data-recipe-id="${recipeDetails.id}">Save Recipe</button>
+              <p>${recipeDetails.instructions || 'No instructions available.'}</p>
+              <button class="save-recipe"
+                  data-recipe-id="${recipeDetails.id}"
+                  data-recipe-title="${recipeDetails.title}"
+                  data-recipe-instructions="${recipeDetails.instructions || 'No instructions available.'}"
+                  data-recipe-ingredients='${encodedIngredients}'>
+                  Save Recipe
+              </button>
+            </div>
           `;
-  
-          if (recipeDetails.nutrition && recipeDetails.nutrition.nutrients && recipeDetails.nutrition.nutrients[0]) {
-            recipeHtml += `<p><strong>Nutrition:</strong> Calories: ${recipeDetails.nutrition.nutrients[0].amount} ${recipeDetails.nutrition.nutrients[0].unit}</p>`;
-          } else {
-            recipeHtml += `<p><strong>Nutrition:</strong> Information not available.</p>`;
-          }
-  
-          recipeHtml += `</div>`;
-  
-          if (recipeHtml) {
-            $("#recipes-list").html(recipeHtml);
-          }
+          $('#recipes-list').append(recipeHtml); 
         },
         error: function () {
           recipeHtml += `<p>Failed to load detailed recipe information for ${recipe.title}.</p>`;
         }
       });
     });
+
+    
   }
 
-  // Save button click handler (as per your earlier code)
-  $(document).on('click', '.save-recipe', function () {
-    const recipeElement = $(this).closest('.recipe');
-    const recipeId = recipeElement.data('recipe-id');
-    const userId = document.querySelector('meta[name="user-id"]')?.getAttribute('content');
-    const recipeTitle = recipeElement.data('recipe-title');
-    const recipeImage = recipeElement.data('recipe-image');
-    const recipeInstructions = recipeElement.data('recipe-instructions');
-    const ingredients = JSON.parse(recipeElement.data('recipe-ingredients'));
-
-    $.ajax({
-      url: '/recipes/save',
-      method: 'POST',
-      data: {
-        recipe_id: recipeId,
-        user_id: userId,
-        title: recipeTitle,
-        image: recipeImage,
-        instructions: recipeInstructions,
-        ingredients: ingredients.map(function (ingredient) {
-          return {
-            name: ingredient.name,
-            quantity: ingredient.amount,
-            unit: ingredient.unit
-          };
-        })
-      },
-      success: function(response) {
-        alert('Recipe saved!');
-      },
-      error: function() {
-        alert('Failed to save the recipe.');
-      }
+  // save the recipe when the button is clicked
+  $(document).on("click", ".save-recipe", function () {
+    const recipeIngredientsData = $(this).data("recipe-ingredients");
+    console.log("Recipe ingredients data on click:", recipeIngredientsData);
+    
+    let recipeIngredients = [];
+    try {
+    
+      const decodedData = decodeURIComponent(recipeIngredientsData);
+      console.log("Decoded ingredients:", decodedData); //  is successful
+  
+      recipeIngredients = JSON.parse(decodedData);
+      console.log("Parsed ingredients:", recipeIngredients);
+    } catch (error) {
+      console.error("Error parsing ingredients:", error);
+    }
+    
+    console.log("Parsed ingredients:", recipeIngredients);
+    
+    saveRecipeToDatabase({
+      title: $(this).data("recipe-title"),
+      instructions: $(this).data("recipe-instructions"),
+      ingredients: recipeIngredients
     });
-  });
+  });  
 });
