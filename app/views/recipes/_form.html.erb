@@ -1,3 +1,8 @@
+<% content_for :javascript do %>
+  <script type="module">
+    import "recipes";
+  </script>
+<% end %>
 
 
 <%= form_with(model: @recipe, url: create_from_form_recipes_path, local: true) do |form| %>
@@ -17,19 +22,31 @@
   </div>
 
   <div class="form-group">
-    <%= form.label :description %>
+    <%= form.label :description, 'Instructions' %>
     <%= form.text_area :description, class: 'form-control' %>
   </div>
 
   <h3>Ingredients</h3>
-  <div id="ingredients">
-    <!-- Dynamically added ingredients will appear here -->
+
+  <div id="ingredients-list">
+    <%= form.fields_for :recipe_ingredients do |ri_form| %>
+      <div class="nested-fields">
+        <div class="form-group">
+          <%= ri_form.label :ingredient_name, "Ingredient Name" %>
+          <%= ri_form.text_field :ingredient_name, class: 'form-control', placeholder: 'e.g., Sugar' %>
+        </div>
+
+        <div class="form-group">
+          <%= ri_form.label :quantity %>
+          <%= ri_form.text_field :quantity, class: 'form-control', placeholder: 'e.g., 2 cups' %>
+        </div>
+      </div>
+    <% end %>
   </div>
 
-  <%= link_to 'Add Ingredient', '#', id: 'add-ingredient', class: 'btn btn-success' %>
+  <button type="button" id="add-ingredient" class="btn btn-success mb-3">Add Ingredient</button>
 
   <div class="form-group">
     <%= form.submit 'Create Recipe', class: 'btn btn-primary' %>
   </div>
 <% end %>
-
