@@ -1,8 +1,9 @@
 <h1><%= @recipe.title %></h1>
-<p><%= @recipe.description %></p>
 
-<h3>Cooking Steps:</h3>
-<p><%= @recipe.cooking_steps %></p>
+<div class="recipe-description">
+<h3>Instructions:</h3>
+<p><%= raw @recipe.description %></p>
+</div>
 <h3>Ingredients</h3>
 <ul>
   <% @recipe.recipe_ingredients.each do |ri| %>

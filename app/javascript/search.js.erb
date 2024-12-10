@@ -1,11 +1,13 @@
 function saveRecipeToDatabase(recipeDetails) {
-  console.log("Recipe Data:", recipeDetails); // Check if data is correct
+  console.log("Recipe Details:", recipeDetails); // data is correct
 
   //join table
   const ingredients = recipeDetails.ingredients.map(function(ingredient) {
     return {
       ingredient_id: ingredient.id,  // The ID of the ingredient table
       quantity: ingredient.amount,   // The quantity to be stored in join table
+      name: ingredient.name,
+      unit: ingredient.unit
     };
   });
 
@@ -21,9 +23,10 @@ function saveRecipeToDatabase(recipeDetails) {
 
   // Make the AJAX request to save the recipe
   $.ajax({
-    url: "/recipes", 
+    url: "/recipes/create_from_api", 
     method: "POST",
     data: recipePayload,
+    dataType: "json",
     success: function(response) {
       console.log("Recipe saved successfully:", response);
       alert("Recipe saved!");
@@ -37,22 +40,20 @@ function saveRecipeToDatabase(recipeDetails) {
 }
 
 $(document).ready(function () {
-  const apiKey = "151f8c76299649229f089258a0118992";
+  const apiKey = "63a9ff1e5f114ef6aa2c2f5df08f9a05";
 
   // CSRF token for internal requests (to your Rails app)
   const csrfToken = document.querySelector('meta[name="csrf-token"]')?.getAttribute('content');
   console.log("CSRF Token:", csrfToken);
   
-  // Add CSRF token only for requests to your Rails server
-  $.ajaxSetup({
+  
+$.ajaxSetup({
   beforeSend: function(xhr, settings) {
-    if (settings.url.includes(window.location.origin)) {
-      xhr.setRequestHeader('X-CSRF-Token', csrfToken);
-      console.log("CSRF Token Set in Request Header:", csrfToken); // Debug
+    if (!/^(GET|HEAD|OPTIONS|TRACE)$/i.test(settings.type) && !this.crossDomain) {
+      xhr.setRequestHeader("X-CSRF-Token", $('meta[name="csrf-token"]').attr('content'));
     }
   }
 });
-
 
   // Search button click handler
   $("#search-button").on("click", function () {
@@ -67,9 +68,9 @@ $(document).ready(function () {
 
   // Fetch recipes based on the ingredient
   function fetchRecipes(ingredient, apiKey) {
-    
+    $("#loading-indicator").show();
     $.ajax({
-      url: `https://api.spoonacular.com/recipes/findByIngredients?ingredients=${ingredient}&number=1&apiKey=${apiKey}`,
+      url: `https://api.spoonacular.com/recipes/findByIngredients?ingredients=${ingredient}&number=6&apiKey=${apiKey}`,
       method: 'GET',
       success: function (recipes) {
         console.log(recipes); // Log the recipes to verify the API response
@@ -79,14 +80,18 @@ $(document).ready(function () {
       },
       error: function () {
         alert("Error fetching recipes.");
-      }
+      },
+      complete: function () {
+      $("#loading-indicator").hide();
+    }
     });
   }
 
   // Function to display detailed recipes
   function fetchDetailedRecipes(recipes, apiKey) {
-    let recipeHtml = "";
+    $('#recipes-list').empty();
     recipes.forEach(function (recipe) {
+      $("#loading-indicator").show(); 
       $.ajax({
         url: `https://api.spoonacular.com/recipes/${recipe.id}/information?apiKey=${apiKey}`,
         method: "GET",
@@ -105,7 +110,7 @@ $(document).ready(function () {
 
           const encodedIngredients = encodeURIComponent(JSON.stringify(sanitizedIngredients));
 
-          recipeHtml += `
+          const recipeCard = `
             <div class="recipe" 
                 data-recipe-id="${recipeDetails.id}"
                 data-recipe-title="${recipeDetails.title}"
@@ -131,11 +136,14 @@ $(document).ready(function () {
               </button>
             </div>
           `;
-          $('#recipes-list').append(recipeHtml); 
+          $('#recipes-list').append(recipeCard); 
         },
         error: function () {
-          recipeHtml += `<p>Failed to load detailed recipe information for ${recipe.title}.</p>`;
-        }
+          console.error(`Failed to load detailed recipe information for recipe ID ${recipe.id}`);
+        }, 
+        complete: function () {
+        $("#loading-indicator").hide(); 
+      }
       });
     });
 

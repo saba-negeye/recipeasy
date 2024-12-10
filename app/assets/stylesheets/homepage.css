@@ -1,0 +1,176 @@
+/* Home Page General Styles */
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f8f9fa;
+  }
+  
+  /* Navbar */
+/* Navbar */
+.navbar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    background-color: #343a40;
+    padding: 10px 20px;
+    z-index: 1000;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1);
+  }
+  
+  .navbar-links {
+    display: flex;
+    gap: 10px; /* Controls spacing between links */
+  }
+  
+  .navbar a, .navbar button {
+    color: #ffffff;
+    text-decoration: none;
+    padding: 8px 12px;
+    border: none;
+    border-radius: 5px;
+    font-size: 1rem;
+    transition: background-color 0.3s, color 0.3s;
+  }
+  
+  .navbar a:hover, .navbar button:hover {
+    background-color: #495057;
+    color: #ffffff;
+  }
+  
+  .navbar .primary {
+    background-color: #28a745;
+  }
+  
+  .navbar .primary:hover {
+    background-color: #218838;
+  }
+  
+  .navbar .danger {
+    background-color: #dc3545;
+  }
+  
+  .navbar .danger:hover {
+    background-color: #c82333;
+  }
+  
+  .navbar .nav-button {
+    background-color: #007bff;
+  }
+  
+  .navbar .nav-button:hover {
+    background-color: #0056b3;
+  }
+  
+  
+  /* Spacing below navbar to avoid content overlap */
+  .container {
+    margin-top: 70px; /* Adjust this value if the navbar height changes */
+  }
+  
+  /* Header */
+  .header {
+    text-align: center;
+    padding: 20px 10px;
+    background-color: #ffffff;
+    box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1);
+  }
+  
+  /* Search Container */
+  .search-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin: 20px auto;
+  }
+  
+  .search-label {
+    font-weight: bold;
+    margin-bottom: 10px;
+  }
+  
+  .search-input {
+    width: 50%;
+    padding: 10px;
+    margin-bottom: 15px;
+    border: 1px solid #ced4da;
+    border-radius: 5px;
+  }
+  
+  .search-button {
+    padding: 10px 20px;
+    background-color: #007bff;
+    color: #ffffff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+  }
+  
+  .search-button:hover {
+    background-color: #0056b3;
+  }
+  
+  /* Loading Indicator */
+  .loading-indicator {
+    margin-top: 10px;
+    color: #6c757d;
+  }
+  
+  /* Recipes List */
+  .recipes-list {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 20px;
+    padding: 20px;
+  }
+  
+  /* Recipe Card */
+  .recipe {
+    background-color: #ffffff;
+    border: 1px solid #ced4da;
+    border-radius: 10px;
+    box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1);
+    padding: 15px;
+    text-align: center;
+    transition: transform 0.3s;
+  }
+  
+  .recipe:hover {
+    transform: translateY(-5px);
+  }
+  
+  .recipe img {
+    max-width: 100%;
+    border-radius: 10px;
+    margin-bottom: 15px;
+  }
+  
+  .recipe h3 {
+    font-size: 1.5em;
+    margin-bottom: 10px;
+  }
+  
+  .recipe ul {
+    text-align: left;
+    padding-left: 20px;
+  }
+  
+  .recipe button {
+    padding: 10px 15px;
+    background-color: #28a745;
+    color: #ffffff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+  }
+  
+  .recipe button:hover {
+    background-color: #218838;
+  }
+  
+  

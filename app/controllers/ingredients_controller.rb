@@ -3,6 +3,7 @@ class IngredientsController < ApplicationController
 
   def index
     @ingredients = Ingredient.all
+    @shopping_list = current_user.shopping_list || current_user.create_shopping_list
   end
 
   def show
