@@ -20,9 +20,15 @@ Rails.application.routes.draw do
   root "pages#home"
 
   resources :users
-  resources :recipes, only: [:index, :create, :new, :edit, :show, :update, :destroy]
+  resources :recipes do
+    collection do
+      post 'create_from_form'
+      post 'create_from_api'
+    end
+  end
   resources :ingredients
-  resources :shopping_lists 
-  
+  resources :shopping_lists, only: [:show] do
+    resources :shopping_list_ingredients, only: [:create,:destroy]
+  end 
   post 'recipes/save', to: 'recipes#save'
 end

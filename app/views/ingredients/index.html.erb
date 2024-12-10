@@ -1,4 +1,3 @@
-
 <h1>Ingredients</h1>
 
 <%= link_to 'New Ingredient', new_ingredient_path, class: 'btn btn-success mb-3' %>
@@ -8,7 +7,7 @@
     <tr>
       <th>Name</th>
       <th>Unit of Measurement</th>
-      <th colspan="3"></th>
+      <th colspan="4"></th>
     </tr>
   </thead>
 
@@ -20,6 +19,12 @@
         <td><%= link_to 'Show', ingredient_path(ingredient), class: 'btn btn-info' %></td>
         <td><%= link_to 'Edit', edit_ingredient_path(ingredient), class: 'btn btn-warning' %></td>
         <td><%= link_to 'Delete', ingredient_path(ingredient), method: :delete, data: { confirm: 'Are you sure?' }, class: 'btn btn-danger' %></td>
+        <td>
+          <%= button_to 'Add to Shopping List',
+                shopping_list_shopping_list_ingredients_path(@shopping_list, ingredient_id: ingredient.id, quantity: 1, unit: ingredient.unit_of_measurement),
+                method: :post,
+                class: 'btn btn-primary' %>
+        </td>
       </tr>
     <% end %>
   </tbody>
