@@ -1,16 +1,22 @@
-<h1>My Recipes</h1>
+<%= link_to 'Home', root_path, class: 'btn btn-primary' %>
+<div class="recipes-container">
+  <h1 class="page-title">My Recipes</h1>
 
-<%= link_to 'New Recipe', new_recipe_path, class: 'btn btn-success mb-3' %>
+  <%= link_to 'New Recipe', new_recipe_path, class: 'btn btn-success mb-3' %>
 
-<% @recipes.each do |recipe| %>
-  <div class="card mb-3">
-    <div class="card-body">
-      <h5 class="card-title"><%= link_to recipe.title, recipe_path(recipe) %></h5>
-      <p class="card-text"><%= truncate(recipe.description, length: 100) %></p>
-      <div class="d-flex justify-content-between">
-        <%= link_to 'Edit', edit_recipe_path(recipe), class: 'btn btn-warning btn-sm' %>
-        <%= link_to 'Delete', recipe_path(recipe), method: :delete, data: { confirm: 'Are you sure?' }, class: 'btn btn-danger btn-sm' %>
+  <% @recipes.each do |recipe| %>
+    <div class="card mb-3 recipe-card">
+      <div class="card-body">
+        <h5 class="card-title">
+          <%= link_to recipe.title, recipe_path(recipe), class: 'recipe-title' %>
+        </h5>
+        <p class="card-text recipe-description"><%= truncate(recipe.description, length: 100) %></p>
+        <div class="action-buttons">
+          <%= link_to 'Edit', edit_recipe_path(recipe), class: 'btn btn-warning btn-sm' %>
+          <%= link_to 'Delete', recipe_path(recipe), method: :delete, data: { confirm: 'Are you sure?' }, class: 'btn btn-danger btn-sm' %>
+        </div>
       </div>
     </div>
-  </div>
-<% end %>
+  <% end %>
+</div>
+

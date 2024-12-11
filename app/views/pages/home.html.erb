@@ -5,21 +5,30 @@
 <% end %>
 
 <!-- Navbar -->
+<!-- Navbar -->
 <nav class="navbar">
-  <% if user_signed_in? %>
-    <a href="/recipes" class="nav-button">My Recipes</a>
-    <%= link_to 'View Shopping List', shopping_list_path(@shopping_list), class: 'nav-button' %>
-    <%= link_to 'View All Ingredients', ingredients_path, class: 'nav-button primary' %>
-    <%= button_to "Sign Out", destroy_user_session_path, method: :delete, class: "nav-button danger" %>
-  <% else %>
-    <%= link_to "Sign In", new_user_session_path, class: "nav-button" %>
-    <%= link_to "Sign Up", new_user_registration_path, class: "nav-button primary" %>
-  <% end %>
+  <div class="auth-buttons">
+    <% if user_signed_in? %>
+      <%= button_to "Sign Out", destroy_user_session_path, method: :delete, class: "nav-button danger" %>
+    <% else %>
+      <%= link_to "Sign In", new_user_session_path, class: "nav-button" %>
+      <%= link_to "Sign Up", new_user_registration_path, class: "nav-button primary" %>
+    <% end %>
+  </div>
+
+  <div class="nav-links">
+    <% if user_signed_in? %>
+      <a href="/recipes" class="nav-button">My Recipes</a>
+      <%= link_to 'View Shopping List', shopping_list_path(@shopping_list), class: 'nav-button' %>
+      <%= link_to 'View All Ingredients', ingredients_path, class: 'nav-button primary' %>
+    <% end %>
+  </div>
 </nav>
+
 
 <div class="user-info">
   <% if user_signed_in? %>
-    👋🏾 Welcome <%= current_user.first_name %>!
+    👋🏾 Hi <%= current_user.first_name %>!
   <% end %>
 </div>
 

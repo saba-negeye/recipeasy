@@ -5,11 +5,10 @@ class RecipesController < ApplicationController
   # Handles form-based recipe creation
   def create_from_form
     @recipe = current_user.recipes.build(recipe_params)
-  
+
     if @recipe.save
       redirect_to recipes_path, notice: 'Recipe was successfully created.'
     else
-      Rails.logger.info @recipe.errors.full_messages # Log errors for debugging
       render :new
     end
   end
@@ -121,6 +120,6 @@ class RecipesController < ApplicationController
   end
 
   def recipe_params
-    params.require(:recipe).permit(:title, :description, recipe_ingredients_attributes: [:ingredient_id, :ingredient_name, :quantity, :_destroy])
+    params.require(:recipe).permit(:title, :description, recipe_ingredients_attributes: [:ingredient_id, ingredient_name, :quantity])
   end
 end

@@ -27,8 +27,8 @@ Rails.application.routes.draw do
     end
   end
   resources :ingredients
-  resources :shopping_lists, only: [:show] do
-    resources :shopping_list_ingredients, only: [:create,:destroy]
+  resources :shopping_lists, only: [:show, :edit, :update] do
+    resources :shopping_list_ingredients, only: [:create, :destroy]
   end 
   post 'recipes/save', to: 'recipes#save'
 end

@@ -32,8 +32,15 @@ class ShoppingListIngredientsController < ApplicationController
     end
     def destroy
       @shopping_list_ingredient = ShoppingListIngredient.find(params[:id])
+      @shopping_list = @shopping_list_ingredient.shopping_list
+
       @shopping_list_ingredient.destroy
-      redirect_to shopping_list_path(@shopping_list), notice: 'Ingredient was successfully removed.'
+
+      if @shopping_list_ingredient.destroy
+        redirect_to edit_shopping_list_path(@shopping_list), notice: 'Ingredient was successfully removed.'
+      else 
+        redirect_to edit_shopping_list_path(@shopping_list), alert: 'Failed to remove ingredient.'
+      end
     end
     
   

@@ -1,31 +1,42 @@
-<h1>Ingredients</h1>
+<%= link_to 'Home', root_path, class: 'btn btn-primary' %>
 
-<%= link_to 'New Ingredient', new_ingredient_path, class: 'btn btn-success mb-3' %>
+<div class="ingredients-container">
+  <h1 class="page-title">Ingredients</h1>
 
-<table class="table">
-  <thead>
-    <tr>
-      <th>Name</th>
-      <th>Unit of Measurement</th>
-      <th colspan="4"></th>
-    </tr>
-  </thead>
+  <div class="action-buttons mb-3">
+    <%= link_to 'New Ingredient', new_ingredient_path, class: 'btn btn-success' %>
+    <%= link_to 'View Shopping List', shopping_list_path(@shopping_list), class: 'btn btn-secondary' %>
+  </div>
 
-  <tbody>
-    <% @ingredients.each do |ingredient| %>
+  <table class="table table-striped">
+    <thead>
       <tr>
-        <td><%= ingredient.name %></td>
-        <td><%= ingredient.unit_of_measurement %></td>
-        <td><%= link_to 'Show', ingredient_path(ingredient), class: 'btn btn-info' %></td>
-        <td><%= link_to 'Edit', edit_ingredient_path(ingredient), class: 'btn btn-warning' %></td>
-        <td><%= link_to 'Delete', ingredient_path(ingredient), method: :delete, data: { confirm: 'Are you sure?' }, class: 'btn btn-danger' %></td>
-        <td>
-          <%= button_to 'Add to Shopping List',
-                shopping_list_shopping_list_ingredients_path(@shopping_list, ingredient_id: ingredient.id, quantity: 1, unit: ingredient.unit_of_measurement),
-                method: :post,
-                class: 'btn btn-primary' %>
-        </td>
+        <th>Name</th>
+        <th>Unit of Measurement</th>
+        <th>Actions</th>
+        <th>Add to Shopping List</th>
       </tr>
-    <% end %>
-  </tbody>
-</table>
+    </thead>
+
+    <tbody>
+      <% @ingredients.each do |ingredient| %>
+        <tr>
+          <td><%= ingredient.name %></td>
+          <td><%= ingredient.unit_of_measurement %></td>
+          <td>
+            <%= link_to 'Details', ingredient_path(ingredient), class: 'btn btn-info btn-sm' %>
+            <%= link_to 'Edit', edit_ingredient_path(ingredient), class: 'btn btn-warning btn-sm' %>
+            <%= link_to 'Delete', ingredient_path(ingredient), method: :delete, data: { confirm: 'Are you sure?' }, class: 'btn btn-danger btn-sm' %>
+          </td>
+          <td>
+            <%= button_to 'Add to Shopping List',
+                  shopping_list_shopping_list_ingredients_path(@shopping_list, ingredient_id: ingredient.id, quantity: 1, unit: ingredient.unit_of_measurement),
+                  method: :post,
+                  class: 'btn btn-primary btn-sm' %>
+          </td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+</div>
+

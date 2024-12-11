@@ -1,39 +1,34 @@
-<h1>Edit Your Shopping List</h1>
+<h1>Manage Your Shopping List</h1>
 
-<%= form_with(model: @shopping_list, local: true) do |form| %>
-  <% if @shopping_list.errors.any? %>
-    <div class="alert alert-danger">
-      <ul>
-        <% @shopping_list.errors.full_messages.each do |message| %>
-          <li><%= message %></li>
-        <% end %>
-      </ul>
-    </div>
-  <% end %>
-
-  <div class="form-group">
-    <%= form.label :name %>
-    <%= form.text_field :name, class: "form-control" %>
-  </div>
-  <div class="form-group">
-    <%= form.submit "Update Shopping List", class: "btn btn-primary" %>
-  </div>
+<!-- Display Current Ingredients -->
+<h2>Ingredients in Your Shopping List</h2>
+<% if @shopping_list.ingredients.any? %>
+  <ul class="list-group">
+    <% @shopping_list.shopping_list_ingredients.each do |shopping_list_ingredient| %>
+      <% if shopping_list_ingredient.ingredient.present? %>
+        <li class="list-group-item d-flex justify-content-between align-items-center">
+          <span>
+            <strong><%= shopping_list_ingredient.ingredient.name %></strong>
+            - <%= shopping_list_ingredient.quantity %>
+          </span>
+          <%= button_to 'Remove', shopping_list_shopping_list_ingredient_path(@shopping_list, shopping_list_ingredient),
+                method: :delete,
+                data: { confirm: "Are you sure you want to remove this ingredient?" },
+                class: "btn btn-danger btn-sm" %>
+        </li>
+      <% else %>
+        <li class="list-group-item d-flex justify-content-between align-items-center">
+          <span>Missing Ingredient</span>
+          <%= button_to 'Remove', shopping_list_shopping_list_ingredient_path(@shopping_list, shopping_list_ingredient),
+                method: :delete,
+                data: { confirm: "Are you sure you want to remove this invalid entry?" },
+                class: "btn btn-warning btn-sm" %>
+        </li>
+      <% end %>
+    <% end %>
+  </ul>
+<% else %>
+  <p>No ingredients in your shopping list. Add some ingredients!</p>
 <% end %>
 
-<!-- Ingredient Adding Form -->
-<%= form_with(model: [ @shopping_list, @shopping_list_ingredient ], local: true) do |form| %>
-  <div class="form-group">
-    <%= form.text_field :name, placeholder: "Ingredient name", class: "form-control" %>
-  </div>
-  <div class="form-group">
-    <%= form.text_field :quantity, placeholder: "Quantity", class: "form-control" %>
-  </div>
-  <div class="form-group">
-    <%= form.text_field :unit, placeholder: "Unit (e.g., grams)", class: "form-control" %>
-  </div>
-  <div class="form-group">
-    <%= form.submit "Add Ingredient", class: "btn btn-secondary" %>
-  </div>
-<% end %>
-
-<%= link_to 'Back to Shopping List', shopping_list_path(@shopping_list), class: 'btn btn-secondary' %>
+<%= link_to 'Back to Shopping List', shopping_list_path(@shopping_list), class: 'btn btn-secondary mt-3' %>

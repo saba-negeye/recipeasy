@@ -5,8 +5,7 @@ class RecipeIngredient < ApplicationRecord
   attr_accessor :ingredient_name
   before_validation :find_or_create_ingredient
 
-  validates :quantity, presence: true
-  validates :ingredient, presence: true
+  
 
   private
 
