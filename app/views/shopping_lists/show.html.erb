@@ -1,15 +1,32 @@
-<h1>Your Shopping List</h1>
-<%= link_to 'View All Ingredients', ingredients_path, class: 'btn btn-primary mb-3' %>
-<% if @shopping_list.ingredients.empty? %>
-  <p>Your shopping list is empty. Start adding items to plan your meals!</p>
-<% else %>
-  <ul>
-  <% @shopping_list.ingredients.each do |ingredient| %>
-    <li>
-      <%= ingredient.name %>
-      
+<%= link_to 'Home', root_path, class: 'btn btn-primary' %>
 
-    </li>
+<div class="shopping-list-container">
+<h1 class="shopping-list-title"><%= current_user.first_name %>'s Shopping List</h1>
+
+
+  <div class="shopping-list-actions mb-3">
+    <%= link_to 'Add Ingredients to Shopping List', ingredients_path, class: 'btn btn-primary' %>
+  </div>
+
+  <% if @shopping_list.ingredients.empty? %>
+    <p class="empty-list">Your shopping list is empty. Start adding items to plan your meals!</p>
+  <% else %>
+    <ul class="shopping-list-items">
+      <% @shopping_list.shopping_list_ingredients.each do |shopping_list_ingredient| %>
+      <% ingredient = shopping_list_ingredient.ingredient %>
+       <% if ingredient.present? %>
+          <li class="shopping-list-item">
+            <span class="ingredient-name"><%= ingredient.name %></span>
+
+            <%= button_to 'Remove', shopping_list_shopping_list_ingredient_path(@shopping_list, shopping_list_ingredient),
+                          method: :delete,
+                          data: { confirm: 'Are you sure you want to remove this ingredient?' },
+                          class: 'btn btn-danger btn-sm' %>
+
+
+          </li>
+        <% end %>
+      <% end %>
+    </ul>
   <% end %>
-  </ul>
-<% end %>
+</div>
