@@ -14,7 +14,11 @@ document.addEventListener("DOMContentLoaded", () => {
             </div>
             <div class="form-group">
               <label for="quantity">Quantity</label>
-              <input type="text" name="recipe[recipe_ingredients_attributes][][quantity]" class="form-control" placeholder="e.g., 2 cups" />
+              <input type="text" name="recipe[recipe_ingredients_attributes][][quantity]" class="form-control" placeholder="e.g., cups" />
+            </div>
+            <div class="form-group">
+              <label for="ingredient_unit_of_measurement">Unit of Measurement</label>
+              <input type="text" name="recipe[recipe_ingredients_attributes][][ingredient_unit_of_measurement]" class="form-control" placeholder="e.g., cups" />
             </div>
           </div>
         `;
