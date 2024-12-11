@@ -78,10 +78,10 @@ body {
   .header {
     text-align: center;
     padding: 20px 10px;
-    background-color: lightsalmon;
+    background-color: rgba(255,160,122,0.8); /* 80% opacity */
     box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1);
     border-radius: 10px; 
-  }
+}
   
   /* Search Container */
   .search-container {
@@ -134,7 +134,7 @@ body {
   
   /* Recipe Card */
   .recipe {
-    background-color: rgba(255, 160, 122, 0.8);
+    background-color: rgba(255, 160, 122, 0.5);
     border: 1px solid #ced4da;
     border-radius: 10px;
     box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1);

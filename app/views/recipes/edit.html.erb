@@ -6,11 +6,12 @@
     </script>
   <% end %>
   
+  
   <div class="home-button">
   <%= link_to 'Home', root_path, class: 'btn btn-primary' %>
   </div>
+  <%= link_to 'Back To Recipes', recipes_path, class: 'btn btn-primary' %>
 
-  <a href="/recipes" class="nav-button">Back To Recipes</a>
   <div class="recipe-form-container">
     <h1>Edit Your Recipe</h1>
   
@@ -57,7 +58,7 @@
       <button type="button" id="add-ingredient" class="btn btn-success mb-3">+ Add Ingredient</button>
   
       <div class="form-group">
-        <%= form.submit 'Create Recipe', class: 'btn btn-primary btn-lg btn-block' %>
+        <%= form.submit 'Save Edits', class: 'btn btn-primary btn-lg btn-block' %>
       </div>
     <% end %>
   </div>
