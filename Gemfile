@@ -17,20 +17,20 @@ gem "stimulus-rails"
 # Build JSON APIs with ease [https://github.com/rails/jbuilder]
 gem "jbuilder"
 
-gem 'bootstrap', '~> 5.3'
+gem "bootstrap", "~> 5.3"
 # Optional for Bootstrap JS components
-gem 'jquery-rails' 
+gem "jquery-rails"
 
-gem 'sassc-rails'
+gem "sassc-rails"
 
-#api 
-gem 'httparty'
-gem 'dotenv-rails', groups: [:development, :test]
+# api
+gem "httparty"
+gem "dotenv-rails", groups: [ :development, :test ]
 
 
-gem 'cocoon'
+gem "cocoon"
 
-gem 'gon'
+gem "gon"
 
 # Use Redis adapter to run Action Cable in production
 # gem "redis", ">= 4.0.1"

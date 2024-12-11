@@ -1,7 +1,7 @@
 class ShoppingListIngredientsController < ApplicationController
     before_action :set_shopping_list
-    before_action :set_shopping_list_ingredient, only: [:update]
-    
+    before_action :set_shopping_list_ingredient, only: [ :update ]
+
 
     def show
         @shopping_list = ShoppingList.find(params[:id])
@@ -12,22 +12,22 @@ class ShoppingListIngredientsController < ApplicationController
       ingredient = Ingredient.find(shopping_list_ingredient_params[:ingredient_id])
       @shopping_list_ingredient = @shopping_list.shopping_list_ingredients.build(
         ingredient: ingredient
-        
+
       )
-    
+
       if @shopping_list_ingredient.save
         redirect_to @shopping_list, notice: "#{ingredient.name} was successfully added to your shopping list."
       else
-        render 'shopping_lists/show'
+        render "shopping_lists/show"
       end
     end
-    
-  
+
+
     def update
       if @shopping_list_ingredient.update(shopping_list_ingredient_params)
-        redirect_to @shopping_list, notice: 'Ingredient was successfully updated.'
+        redirect_to @shopping_list, notice: "Ingredient was successfully updated."
       else
-        render 'shopping_lists/show'
+        render "shopping_lists/show"
       end
     end
     def destroy
@@ -37,25 +37,24 @@ class ShoppingListIngredientsController < ApplicationController
       @shopping_list_ingredient.destroy
 
       if @shopping_list_ingredient.destroy
-        redirect_to edit_shopping_list_path(@shopping_list), notice: 'Ingredient was successfully removed.'
-      else 
-        redirect_to edit_shopping_list_path(@shopping_list), alert: 'Failed to remove ingredient.'
+        redirect_to edit_shopping_list_path(@shopping_list), notice: "Ingredient was successfully removed."
+      else
+        redirect_to edit_shopping_list_path(@shopping_list), alert: "Failed to remove ingredient."
       end
     end
-    
-  
+
+
     private
-  
+
     def set_shopping_list
       @shopping_list = ShoppingList.find(params[:shopping_list_id])
     end
-  
+
     def set_shopping_list_ingredient
       @shopping_list_ingredient = ShoppingListIngredient.find(params[:id])
     end
-  
+
     def shopping_list_ingredient_params
       params.permit(:ingredient_id)
     end
-  end
-  
+end

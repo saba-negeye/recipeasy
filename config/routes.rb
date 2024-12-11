@@ -1,5 +1,4 @@
 Rails.application.routes.draw do
-
   devise_for :users
   get "pages/home"
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
@@ -13,7 +12,7 @@ Rails.application.routes.draw do
   get "manifest" => "rails/pwa#manifest", as: :pwa_manifest
 
   # route will capture the search term (ingredient) from the user and pass it to the controller
-  get '/recipes/search', to: 'recipes#search', as: 'search_recipes'
+  get "/recipes/search", to: "recipes#search", as: "search_recipes"
 
   # Defines the root path route ("/")
   # root "posts#index"
@@ -22,13 +21,13 @@ Rails.application.routes.draw do
   resources :users
   resources :recipes do
     collection do
-      post 'create_from_form'
-      post 'create_from_api'
+      post "create_from_form"
+      post "create_from_api"
     end
   end
   resources :ingredients
-  resources :shopping_lists, only: [:show, :edit, :update] do
-    resources :shopping_list_ingredients, only: [:create, :destroy]
-  end 
-  post 'recipes/save', to: 'recipes#save'
+  resources :shopping_lists, only: [ :show, :edit, :update ] do
+    resources :shopping_list_ingredients, only: [ :create, :destroy ]
+  end
+  post "recipes/save", to: "recipes#save"
 end

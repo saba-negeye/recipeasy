@@ -1,5 +1,5 @@
 class ShoppingListsController < ApplicationController
-  before_action :set_shopping_list, only: [:show, :edit, :update, :destroy]
+  before_action :set_shopping_list, only: [ :show, :edit, :update, :destroy ]
 
   # Show the shopping list
   def show
@@ -25,7 +25,7 @@ class ShoppingListsController < ApplicationController
   # Update the shopping list
   def update
     if @shopping_list.update(shopping_list_params)
-      redirect_to shopping_list_path(@shopping_list), notice: 'Shopping list was successfully updated.'
+      redirect_to shopping_list_path(@shopping_list), notice: "Shopping list was successfully updated."
     else
       render :edit
     end
@@ -35,9 +35,9 @@ class ShoppingListsController < ApplicationController
   def destroy
     @shopping_list_ingredient = ShoppingListIngredient.find(params[:id])
     if @shopping_list_ingredient.destroy
-      redirect_to shopping_list_path(@shopping_list), notice: 'Ingredient was successfully removed.'
+      redirect_to shopping_list_path(@shopping_list), notice: "Ingredient was successfully removed."
     else
-      redirect_to shopping_list_path(@shopping_list), alert: 'Failed to remove the ingredient.'
+      redirect_to shopping_list_path(@shopping_list), alert: "Failed to remove the ingredient."
     end
   end
 
@@ -52,10 +52,7 @@ class ShoppingListsController < ApplicationController
   def shopping_list_params
     params.require(:shopping_list).permit(
       :name,
-      shopping_list_ingredients_attributes: [:id, :ingredient_id, :quantity, :_destroy]
+      shopping_list_ingredients_attributes: [ :id, :ingredient_id, :quantity, :_destroy ]
     )
   end
 end
-
-
-

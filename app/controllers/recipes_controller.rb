@@ -1,13 +1,13 @@
 class RecipesController < ApplicationController
   before_action :authenticate_user!
-  before_action :set_recipe, only: [:show, :edit, :update, :destroy]
+  before_action :set_recipe, only: [ :show, :edit, :update, :destroy ]
 
   # Handles form-based recipe creation
   def create_from_form
     @recipe = current_user.recipes.build(recipe_params)
 
     if @recipe.save
-      redirect_to recipes_path, notice: 'Recipe was successfully created.'
+      redirect_to recipes_path, notice: "Recipe was successfully created."
     else
       render :new
     end
@@ -25,13 +25,13 @@ class RecipesController < ApplicationController
           ingredient.unit_of_measurement = ingredient_data[:unit]
         end
       end
-  
+
       # Step 2: Create the recipe
       @recipe = current_user.recipes.create!(
         title: params[:recipe][:title],
         description: params[:recipe][:description]
       )
-  
+
       # Step 3: Create recipe_ingredients
       params[:recipe][:recipe_ingredients_attributes].values.each do |ingredient_data|
         ingredient = ingredients.find { |i| i.spoonacular_id == ingredient_data[:ingredient_id].to_i }
@@ -41,12 +41,12 @@ class RecipesController < ApplicationController
         )
       end
     end
-  
-    render json: { message: 'Recipe was successfully created.', recipe: @recipe }, status: :created
+
+    render json: { message: "Recipe was successfully created.", recipe: @recipe }, status: :created
   rescue ActiveRecord::RecordInvalid => e
     render json: { error: e.message }, status: :unprocessable_entity
   end
-  
+
   # API-based recipe creation
   # def create_from_api
   #   ActiveRecord::Base.transaction do
@@ -99,7 +99,7 @@ class RecipesController < ApplicationController
 
   def update
     if @recipe.update(recipe_params)
-      redirect_to @recipe, notice: 'Recipe was successfully updated.'
+      redirect_to @recipe, notice: "Recipe was successfully updated."
     else
       render :edit
     end
@@ -107,7 +107,7 @@ class RecipesController < ApplicationController
 
   def destroy
     @recipe.destroy
-    redirect_to recipes_path, notice: 'Recipe was successfully destroyed.'
+    redirect_to recipes_path, notice: "Recipe was successfully destroyed."
   end
 
   private
@@ -115,11 +115,11 @@ class RecipesController < ApplicationController
   def set_recipe
     @recipe = current_user.recipes.find_by(id: params[:id])
     unless @recipe
-      redirect_to recipes_path, alert: 'Recipe not found or you do not have access to it.'
+      redirect_to recipes_path, alert: "Recipe not found or you do not have access to it."
     end
   end
 
   def recipe_params
-    params.require(:recipe).permit(:title, :description, recipe_ingredients_attributes: [:id, :ingredient_id, :ingredient_name, :quantity,:ingredient_unit_of_measurement, :_destroy])
+    params.require(:recipe).permit(:title, :description, recipe_ingredients_attributes: [ :id, :ingredient_id, :ingredient_name, :quantity, :ingredient_unit_of_measurement, :_destroy ])
   end
 end
