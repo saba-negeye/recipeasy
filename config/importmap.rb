@@ -8,5 +8,3 @@ pin_all_from "app/javascript/controllers", under: "controllers"
 pin "jquery", to: "https://code.jquery.com/jquery-3.6.0.min.js", preload: true
 pin "search", to: "search.js"
 pin "recipes", to: "recipes.js"
-
-

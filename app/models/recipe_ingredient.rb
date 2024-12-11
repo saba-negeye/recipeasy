@@ -6,13 +6,13 @@ class RecipeIngredient < ApplicationRecord
   attr_accessor :ingredient_unit_of_measurement
   before_create :find_or_create_ingredient
 
-  
+
 
   private
 
   def find_or_create_ingredient
     # If ingredient_name is provided, find or create the ingredient
-    puts '.....................'
+    puts "....................."
     puts ingredient_name
     puts ingredient_unit_of_measurement
     if ingredient_id.blank? && ingredient_name.present?
