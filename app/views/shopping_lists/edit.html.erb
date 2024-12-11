@@ -1,7 +1,7 @@
 
 
 <!-- Display Current Ingredients -->
-
+<%= link_to 'Home', root_path, class: 'btn btn-primary' %>
 <% if @shopping_list.ingredients.any? %>
   <ul class="list-group">
     <% @shopping_list.shopping_list_ingredients.each do |shopping_list_ingredient| %>
