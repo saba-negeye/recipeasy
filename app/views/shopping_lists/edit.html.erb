@@ -1,7 +1,7 @@
-<h1>Manage Your Shopping List</h1>
+
 
 <!-- Display Current Ingredients -->
-<h2>Ingredients in Your Shopping List</h2>
+
 <% if @shopping_list.ingredients.any? %>
   <ul class="list-group">
     <% @shopping_list.shopping_list_ingredients.each do |shopping_list_ingredient| %>
@@ -32,3 +32,6 @@
 <% end %>
 
 <%= link_to 'Back to Shopping List', shopping_list_path(@shopping_list), class: 'btn btn-secondary mt-3' %>
+<div class="shopping-list-actions mb-3">
+    <%= link_to 'Add Ingredients to Shopping List', ingredients_path, class: 'btn btn-primary' %>
+  </div>

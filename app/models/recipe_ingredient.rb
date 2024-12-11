@@ -3,7 +3,8 @@ class RecipeIngredient < ApplicationRecord
   belongs_to :ingredient, optional: true
 
   attr_accessor :ingredient_name
-  before_validation :find_or_create_ingredient
+  attr_accessor :ingredient_unit_of_measurement
+  before_create :find_or_create_ingredient
 
   
 
@@ -11,8 +12,11 @@ class RecipeIngredient < ApplicationRecord
 
   def find_or_create_ingredient
     # If ingredient_name is provided, find or create the ingredient
-    if ingredient_name.present?
-      self.ingredient = Ingredient.find_or_create_by(name: ingredient_name.strip)
+    puts '.....................'
+    puts ingredient_name
+    puts ingredient_unit_of_measurement
+    if ingredient_id.blank? && ingredient_name.present?
+      self.ingredient = Ingredient.find_or_create_by(name: ingredient_name.strip, unit_of_measurement: ingredient_unit_of_measurement)
     end
   end
 end
