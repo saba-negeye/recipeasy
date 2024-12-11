@@ -19,7 +19,29 @@
 @import "template";
 
 body {
-    background: url('https://media.istockphoto.com/id/1820694690/vector/cooking-background-with-decorative-frame-horizontal-flyer-with-food-items-meal-ingredients.jpg?s=612x612&w=0&k=20&c=Eup2tjfKPjVgsu8MgnVwBhICoAtj_fGTOfquPOkDnWc=') no-repeat center center fixed;
+    background: url(https://media.istockphoto.com/id/1313187927/vector/cooking-food-and-vegetables-background.jpg?s=612x612&w=0&k=20&c=qC9BPv5TLtYEh-_myYacOZSugAEUx4S_uq5s6H33-ss=) no-repeat center center fixed;
     background-size: cover;
+  }
+  
+  
+  .home-button .btn-primary {
+    background-color: darkorange;
+    border-color: darkorange;
+    margin: 0 20px;
+  }
+  
+  .home-button .btn-primary:hover {
+    background-color: #e67e22; /* Slightly darker shade for hover */
+    border-color: #e67e22;
+  }
+  
+  .btn-primary {
+    background-color: darkorange;
+    border-color: darkorange;
+  }
+  
+  .btn-primary:hover {
+    background-color: #e67e22; /* slightly darker on hover */
+    border-color: #e67e22;
   }
   

@@ -4,7 +4,10 @@
   </script>
 <% end %>
 
-<%= link_to 'Home', root_path, class: 'btn btn-primary' %>
+<div class="home-button">
+  <%= link_to 'Home', root_path, class: 'btn btn-primary' %>
+</div>
+
 
 <div class="recipe-form-container">
   <h1>Create Your Recipe</h1>
@@ -51,7 +54,7 @@
             <%= ri_form.label :ingredient_unit_of_measurement, class: 'form-label' %>
             <%= ri_form.text_field :ingredient_unit_of_measurement, class: 'form-control input-sm', placeholder: 'e.g.,cups' %>
           </div>
-          
+
         </div>
       <% end %>
     </div>
