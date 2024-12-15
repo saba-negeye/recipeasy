@@ -4,7 +4,7 @@
   </script>
 <% end %>
 
-<!-- Navbar -->
+   <!-- Navbar -->
 <!-- Navbar -->
 <nav class="navbar">
   <div class="auth-buttons">
@@ -18,9 +18,9 @@
 
   <div class="nav-links">
     <% if user_signed_in? %>
-      <a href="/recipes" class="nav-button">My Recipes</a>
+      <%= link_to 'My Recipes', recipes_path, class:'nav-button'%>
       <%= link_to 'View Shopping List', shopping_list_path(@shopping_list), class: 'nav-button' %>
-      <%= link_to 'View All Ingredients', ingredients_path, class: 'nav-button primary' %>
+      <%= link_to 'View All Ingredients', ingredients_path, class: 'nav-button' %>
     <% end %>
   </div>
 </nav>

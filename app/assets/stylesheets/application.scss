@@ -19,7 +19,7 @@
 @import "template";
 
 body {
-    background: url(https://media.istockphoto.com/id/1313187927/vector/cooking-food-and-vegetables-background.jpg?s=612x612&w=0&k=20&c=qC9BPv5TLtYEh-_myYacOZSugAEUx4S_uq5s6H33-ss=) no-repeat center center fixed;
+    background: url(https://img.freepik.com/free-photo/top-view-fresh-vegetables-with-raw-pasta-dark-surface-ripe-food-meal-salad_140725-101940.jpg?t=st=1734032154~exp=1734035754~hmac=c6811c5e0cffcbaab7fbe3c061ff4aae27451d3537029e4a6cf107c88b23e08e&w=1380) no-repeat center center fixed;
     background-size: cover;
   }
   
@@ -45,3 +45,7 @@ body {
     border-color: #e67e22;
   }
   
+
+.auth-container{
+  background-color: rgba(255,160,122,0.8);
+}
