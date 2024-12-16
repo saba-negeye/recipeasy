@@ -3,7 +3,7 @@ class RecipesController < ApplicationController
   before_action :set_recipe, only: [ :show, :edit, :update, :destroy ]
 
   # Handles form-based recipe creation
-  def create_from_form
+  def create
     @recipe = current_user.recipes.build(recipe_params)
 
     if @recipe.save

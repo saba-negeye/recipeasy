@@ -44,7 +44,7 @@ $(document).ready(function () {
 
   // CSRF token for internal requests (to your Rails app)
   const csrfToken = document.querySelector('meta[name="csrf-token"]')?.getAttribute('content');
-  console.log("CSRF Token:", csrfToken);
+
   
   
 $.ajaxSetup({

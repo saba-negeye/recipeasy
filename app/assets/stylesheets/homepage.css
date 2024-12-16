@@ -176,4 +176,8 @@ body {
     background-color: #218838;
   }
   
-  
+  /* In your CSS file or <style> tag */
+.user-info {
+  font-weight: bold;
+  color: green;
+}
