@@ -40,7 +40,7 @@ function saveRecipeToDatabase(recipeDetails) {
 }
 
 $(document).ready(function () {
-  const apiKey = "f257406e750a43e5a334e867cb6587ff";
+  const apiKey = "<%= Rails.application.credentials.dig(:spoonacular, :api_key) %>";
 
   // CSRF token for internal requests (to your Rails app)
   const csrfToken = document.querySelector('meta[name="csrf-token"]')?.getAttribute('content');
